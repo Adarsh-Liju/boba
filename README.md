@@ -1,130 +1,120 @@
 # 🐬 MySQL CLI Client
 
-A beautiful, interactive terminal-based MySQL client built with Go and Bubble Tea.
+A beautiful, modern terminal-based MySQL client built with Go and Bubble Tea. Features an intuitive interface with advanced data management capabilities.
 
-## Features
+## ✨ Features
 
-- **Interactive SQL Query Execution**: Execute SQL queries with real-time feedback
-- **Query History**: Browse and reuse previous queries with `Ctrl+H`
-- **Help System**: Access comprehensive help with `?` key
-- **Responsive Layout**: Adapts to terminal window size
-- **Error Handling**: Clear error messages and status updates
-- **Tabular Results**: Beautiful table display for query results
-- **Keyboard Navigation**: Full keyboard support for all operations
-- **Environment Configuration**: Easy setup with `.env` file
+### 🎯 Core Functionality
+- **Interactive SQL Query Execution** - Execute queries with real-time feedback
+- **Database Connection Management** - Easy setup with connection form
+- **Query History** - Navigate through previous queries with Ctrl+H
+- **Tabular Results** - Beautiful table display with sorting capabilities
+- **Error Handling** - Clear error messages and status indicators
 
-## Interactive Features
+### 📊 Data Management & Export
+- **Multiple Copy Formats**:
+  - 📋 CSV format for spreadsheet applications
+  - 📊 Table format (Markdown) for documentation
+  - 📄 JSON format for API integration
+  - 💾 Direct file export with timestamped filenames
+  - 📈 Query statistics export
 
-### Key Bindings
-- `Enter` - Execute SQL query
-- `Ctrl+C` - Quit application
-- `Esc` - Clear input field
-- `?` - Show/hide help
-- `Ctrl+H` - Show query history
-- `↑/↓` - Navigate through query history
+### 🎨 Visual Enhancements
+- **Modern UI Design** - Professional terminal interface with color coding
+- **Query Statistics** - Execution time, row count, and timestamp tracking
+- **Table Information** - Detailed metadata about query results
+- **Status Indicators** - Real-time feedback with emojis and colors
+- **Responsive Layout** - Adapts to terminal window size
 
-### Query History
-- Automatically saves executed queries
-- Browse history with `Ctrl+H`
-- Select and reuse previous queries
-- Navigate through history with arrow keys
+## 🚀 Quick Start
 
-### Help System
-- Press `?` to access the help screen
-- Comprehensive key binding documentation
-- Feature overview
-- Press `Esc` to return to main interface
+### Prerequisites
+- Go 1.19 or higher
+- MySQL server running
 
-## Installation
-
-1. Clone the repository
-2. Install dependencies:
-   ```bash
-   go mod tidy
-   ```
-3. Configure your database connection (see Configuration section)
-4. Build the application:
-   ```bash
-   go build -o boba.exe main.go
-   ```
-
-## Configuration
-
-### Using .env file (Recommended)
-
-1. Copy the sample environment file:
-   ```bash
-   cp .env_sample .env
-   ```
-
-2. Edit the `.env` file with your database credentials:
-   ```bash
-   # Database Host (default: localhost)
-   DB_HOST=localhost
-   
-   # Database Port (default: 3306)
-   DB_PORT=3306
-   
-   # Database Username (default: root)
-   DB_USER=root
-   
-   # Database Password (default: empty)
-   DB_PASS=your_password_here
-   
-   # Database Name (default: empty)
-   DB_NAME=your_database_name
-   ```
-
-### Using Environment Variables
-
-Alternatively, you can set environment variables directly:
-
+### Installation
 ```bash
-export DB_HOST=localhost
-export DB_PORT=3306
-export DB_USER=root
-export DB_PASS=your_password
-export DB_NAME=your_database
+git clone <repository-url>
+cd boba
+go mod tidy
+go run main.go
 ```
 
-### Default Values
+### Usage
+1. **Connect to Database**: Enter your MySQL connection details
+2. **Execute Queries**: Type SQL queries and press Enter
+3. **Copy Data**: Press Ctrl+D to access copy/export options
+4. **View Statistics**: Press Ctrl+S to toggle query statistics
+5. **Table Info**: Press Ctrl+I to toggle table information
 
-If no environment variables are set, the application uses these defaults:
-- Host: localhost
-- Port: 3306
-- User: root
-- Password: (empty)
-- Database: (empty)
+## ⌨️ Key Bindings
 
-## Usage
+| Key | Action |
+|-----|--------|
+| `Enter` | Execute SQL query |
+| `Ctrl+C` | Quit application |
+| `Esc` | Clear input field |
+| `?` | Show help |
+| `Ctrl+H` | Show query history |
+| `Ctrl+D` | Copy/export data |
+| `Ctrl+S` | Toggle query statistics |
+| `Ctrl+I` | Toggle table information |
+| `↑/↓` | Navigate query history |
 
-1. Start the application:
-   ```bash
-   ./boba.exe
-   ```
+## 📊 Copy & Export Options
 
-2. Enter SQL queries in the input field
-3. Press `Enter` to execute
-4. Use `?` for help or `Ctrl+H` for history
-5. Press `Ctrl+C` to quit
+When you have query results, press `Ctrl+D` to access:
 
-## Dependencies
+1. **📋 Copy as CSV** - Export data in CSV format
+2. **📊 Copy as Table** - Export as formatted Markdown table
+3. **📄 Copy as JSON** - Export data in JSON format
+4. **💾 Export to File** - Save data to timestamped CSV file
+5. **📈 Copy Statistics** - Copy query execution statistics
 
-- [Bubble Tea](https://github.com/charmbracelet/bubbletea) - TUI framework
-- [Bubbles](https://github.com/charmbracelet/bubbles) - UI components
-- [Lip Gloss](https://github.com/charmbracelet/lipgloss) - Styling
-- [MySQL Driver](https://github.com/go-sql-driver/mysql) - Database connectivity
-- [Godotenv](https://github.com/joho/godotenv) - Environment variable loading
+## 🎨 Visual Features
 
-## Screenshots
+### Color Scheme
+- **Purple** (#7C3AED) - Primary actions and headers
+- **Green** (#10B981) - Success states and secondary elements
+- **Amber** (#F59E0B) - Warnings and accents
+- **Red** (#EF4444) - Errors and critical states
+- **Blue** (#3B82F6) - Information and statistics
 
-The application features:
-- Clean, modern interface with emoji icons
-- Color-coded status messages
-- Responsive table layouts
-- Interactive help and history screens
-- Smooth keyboard navigation
+### Status Indicators
+- 🟢 Connected and ready
+- 🔴 Error state
+- ⏳ Loading/executing
+- ✅ Success
+- ⚠️ Warning
 
-## Contributing
+## 🔧 Technical Details
 
-Feel free to submit issues and enhancement requests! 
+### Dependencies
+- `github.com/charmbracelet/bubbletea` - TUI framework
+- `github.com/charmbracelet/lipgloss` - Styling
+- `github.com/go-sql-driver/mysql` - MySQL driver
+- Various Bubble Tea components (table, list, textinput, etc.)
+
+### Architecture
+- **Model-View-Update** pattern with Bubble Tea
+- **Modular design** with separate components for different views
+- **State management** for UI state and data persistence
+- **Error handling** with graceful degradation
+
+## 🚀 Future Enhancements
+
+- [ ] Clipboard integration for copy operations
+- [ ] Query templates and snippets
+- [ ] Database schema browser
+- [ ] Query optimization suggestions
+- [ ] Multiple database connections
+- [ ] Custom themes and styling
+- [ ] Export to additional formats (Excel, XML, etc.)
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit pull requests or open issues for bugs and feature requests.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details. 

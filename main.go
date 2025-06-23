@@ -61,10 +61,6 @@ type queryResultMsg struct {
 	err  error
 }
 
-type windowSizeMsg struct {
-	width  int
-	height int
-}
 
 // KeyMap defines the key bindings for the application
 type KeyMap struct {
@@ -121,18 +117,14 @@ func DefaultKeyMap() KeyMap {
 	}
 }
 
-var keys = DefaultKeyMap()
-
 // Color palette for better UI
 var (
 	primaryColor   = lipgloss.Color("#7C3AED") // Purple
 	secondaryColor = lipgloss.Color("#10B981") // Green
 	accentColor    = lipgloss.Color("#F59E0B") // Amber
 	errorColor     = lipgloss.Color("#EF4444") // Red
-	successColor   = lipgloss.Color("#10B981") // Green
 	textColor      = lipgloss.Color("#6B7280") // Gray
 	lightTextColor = lipgloss.Color("#9CA3AF") // Light gray
-	bgColor        = lipgloss.Color("#1F2937") // Dark gray
 	cardBgColor    = lipgloss.Color("#374151") // Lighter dark gray
 
 	// Enhanced styles
@@ -159,27 +151,11 @@ var (
 			Border(lipgloss.RoundedBorder()).
 			BorderForeground(errorColor)
 
-	successStyle = lipgloss.NewStyle().
-			Foreground(successColor).
-			Bold(true).
-			Background(cardBgColor).
-			Padding(1, 2).
-			MarginBottom(1).
-			Border(lipgloss.RoundedBorder()).
-			BorderForeground(successColor)
-
 	cardStyle = lipgloss.NewStyle().
 			Border(lipgloss.RoundedBorder()).
 			BorderForeground(primaryColor).
 			Background(cardBgColor).
 			Padding(1, 2).
-			MarginBottom(1)
-
-	inputStyle = lipgloss.NewStyle().
-			Border(lipgloss.RoundedBorder()).
-			BorderForeground(primaryColor).
-			Background(cardBgColor).
-			Padding(0, 1).
 			MarginBottom(1)
 
 	buttonStyle = lipgloss.NewStyle().

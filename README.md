@@ -1,120 +1,116 @@
-# 🐬 MySQL CLI Client
+# boba - Interactive MySQL CLI with Bubble Tea
 
-A beautiful, modern terminal-based MySQL client built with Go and Bubble Tea. Features an intuitive interface with advanced data management capabilities.
+A modern, interactive MySQL command-line interface built with Go and Bubble Tea for a beautiful terminal experience.
 
-## ✨ Features
+## Features
 
-### 🎯 Core Functionality
-- **Interactive SQL Query Execution** - Execute queries with real-time feedback
-- **Database Connection Management** - Easy setup with connection form
-- **Query History** - Navigate through previous queries with Ctrl+H
-- **Tabular Results** - Beautiful table display with sorting capabilities
-- **Error Handling** - Clear error messages and status indicators
+- 🔗 Simple database connection
+- 💬 Interactive SQL query execution
+- 📚 Browse and switch between databases
+- 📋 View and explore tables
+- 🎨 Beautiful terminal UI with Bubble Tea
+- 📊 Clean table output with navigation
+- 🚀 Easy to use and understand
 
-### 📊 Data Management & Export
-- **Multiple Copy Formats**:
-  - 📋 CSV format for spreadsheet applications
-  - 📊 Table format (Markdown) for documentation
-  - 📄 JSON format for API integration
-  - 💾 Direct file export with timestamped filenames
-  - 📈 Query statistics export
+## Installation
 
-### 🎨 Visual Enhancements
-- **Modern UI Design** - Professional terminal interface with color coding
-- **Query Statistics** - Execution time, row count, and timestamp tracking
-- **Table Information** - Detailed metadata about query results
-- **Status Indicators** - Real-time feedback with emojis and colors
-- **Responsive Layout** - Adapts to terminal window size
-
-## 🚀 Quick Start
-
-### Prerequisites
-- Go 1.19 or higher
-- MySQL server running
-
-### Installation
+1. Make sure you have Go installed
+2. Clone this repository
+3. Install dependencies:
 ```bash
-git clone <repository-url>
-cd boba
 go mod tidy
+```
+
+## Usage
+
+Run the application:
+```bash
 go run main.go
 ```
 
-### Usage
-1. **Connect to Database**: Enter your MySQL connection details
-2. **Execute Queries**: Type SQL queries and press Enter
-3. **Copy Data**: Press Ctrl+D to access copy/export options
-4. **View Statistics**: Press Ctrl+S to toggle query statistics
-5. **Table Info**: Press Ctrl+I to toggle table information
+The program will prompt you for:
+- **Host** (defaults to localhost)
+- **User** (defaults to root)
+- **Password**
+- **Database name**
 
-## ⌨️ Key Bindings
+After connecting, you'll see an interactive menu with options:
+- **Execute Query** - Type and run SQL queries
+- **View Databases** - Browse all available databases
+- **View Tables** - See tables in current database
+- **Exit** - Quit the application
 
-| Key | Action |
-|-----|--------|
-| `Enter` | Execute SQL query |
-| `Ctrl+C` | Quit application |
-| `Esc` | Clear input field |
-| `?` | Show help |
-| `Ctrl+H` | Show query history |
-| `Ctrl+D` | Copy/export data |
-| `Ctrl+S` | Toggle query statistics |
-| `Ctrl+I` | Toggle table information |
-| `↑/↓` | Navigate query history |
+## Navigation
 
-## 📊 Copy & Export Options
+- **↑↓** - Navigate through menus and lists
+- **Enter** - Select an option or execute a query
+- **Escape** - Go back to previous menu
+- **Ctrl+C** - Quit the application
 
-When you have query results, press `Ctrl+D` to access:
+## Example
 
-1. **📋 Copy as CSV** - Export data in CSV format
-2. **📊 Copy as Table** - Export as formatted Markdown table
-3. **📄 Copy as JSON** - Export data in JSON format
-4. **💾 Export to File** - Save data to timestamped CSV file
-5. **📈 Copy Statistics** - Copy query execution statistics
+```
+🔗 MySQL Connection
 
-## 🎨 Visual Features
+Host: localhost
+User: root
+Database: testdb
+Password: ********
 
-### Color Scheme
-- **Purple** (#7C3AED) - Primary actions and headers
-- **Green** (#10B981) - Success states and secondary elements
-- **Amber** (#F59E0B) - Warnings and accents
-- **Red** (#EF4444) - Errors and critical states
-- **Blue** (#3B82F6) - Information and statistics
+Press Enter to connect, Ctrl+C to quit
+```
 
-### Status Indicators
-- 🟢 Connected and ready
-- 🔴 Error state
-- ⏳ Loading/executing
-- ✅ Success
-- ⚠️ Warning
+After connecting:
+```
+✅ Connected to MySQL at localhost/testdb
 
-## 🔧 Technical Details
+📋 Main Menu
+─────────────
 
-### Dependencies
-- `github.com/charmbracelet/bubbletea` - TUI framework
-- `github.com/charmbracelet/lipgloss` - Styling
-- `github.com/go-sql-driver/mysql` - MySQL driver
-- Various Bubble Tea components (table, list, textinput, etc.)
+> Execute Query
+  View Databases
+  View Tables
+  Exit
 
-### Architecture
-- **Model-View-Update** pattern with Bubble Tea
-- **Modular design** with separate components for different views
-- **State management** for UI state and data persistence
-- **Error handling** with graceful degradation
+Use ↑↓ to navigate, Enter to select, Ctrl+C to quit
+```
 
-## 🚀 Future Enhancements
+## Dependencies
 
-- [ ] Clipboard integration for copy operations
-- [ ] Query templates and snippets
-- [ ] Database schema browser
-- [ ] Query optimization suggestions
-- [ ] Multiple database connections
-- [ ] Custom themes and styling
-- [ ] Export to additional formats (Excel, XML, etc.)
+- `github.com/go-sql-driver/mysql` - MySQL driver for Go
+- `github.com/charmbracelet/bubbletea` - Terminal UI framework
 
-## 🤝 Contributing
+## Building
 
-Contributions are welcome! Please feel free to submit pull requests or open issues for bugs and feature requests.
+To build the executable:
+```bash
+go build -o boba main.go
+```
 
-## 📄 License
+Then run:
+```bash
+./boba
+```
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
+## Features in Detail
+
+### Execute Query
+- Type SQL queries and press Enter to execute
+- Results are displayed in a clean table format
+- Shows up to 10 rows with pagination info
+- Press Escape to return to main menu
+
+### View Databases
+- Browse all available databases on the server
+- Select a database to switch to it
+- Automatically reconnects with the new database
+
+### View Tables
+- See all tables in the current database
+- Select a table to view its data (first 10 rows)
+- Automatically generates and executes `SELECT * FROM table LIMIT 10`
+
+## TODO
+
+1. Add more colors and cute stuff
+2. Improve UI

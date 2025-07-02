@@ -450,22 +450,34 @@ func main() {
 	var host, user, password, database string
 
 	fmt.Print("Host (localhost): ")
-	fmt.Scanln(&host)
+	if _, err := fmt.Scanln(&host); err != nil {
+		fmt.Printf("Error reading host: %v\n", err)
+		os.Exit(1)
+	}
 	if host == "" {
 		host = "localhost"
 	}
 
 	fmt.Print("User (root): ")
-	fmt.Scanln(&user)
+	if _, err := fmt.Scanln(&user); err != nil {
+		fmt.Printf("Error reading user: %v\n", err)
+		os.Exit(1)
+	}
 	if user == "" {
 		user = "root"
 	}
 
 	fmt.Print("Password: ")
-	fmt.Scanln(&password)
+	if _, err := fmt.Scanln(&password); err != nil {
+		fmt.Printf("Error reading password: %v\n", err)
+		os.Exit(1)
+	}
 
 	fmt.Print("Database: ")
-	fmt.Scanln(&database)
+	if _, err := fmt.Scanln(&database); err != nil {
+		fmt.Printf("Error reading database: %v\n", err)
+		os.Exit(1)
+	}
 
 	// Initialize model
 	m := initialModel()

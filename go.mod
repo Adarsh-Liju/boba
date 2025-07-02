@@ -1,4 +1,4 @@
-module boba
+module github.com/Adarsh-Liju/boba
 
 go 1.21.0
 

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Boba MySQL Client</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // On page load, check for saved theme preference or default to light mode
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+  </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans transition-colors duration-200">
+
+  <div class="max-w-4xl mx-auto p-8">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold">🧋 Boba MySQL Client</h1>
+      <button id="theme-toggle" class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200">
+        <svg id="sun-icon" class="w-6 h-6 hidden dark:block" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+        </svg>
+        <svg id="moon-icon" class="w-6 h-6 block dark:hidden" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Login Form -->
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow mb-8 border border-gray-200 dark:border-gray-700">
+      <h2 class="text-xl font-semibold mb-4">1. Connect to Database</h2>
+      <form id="login-form" class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <input type="text" id="username" placeholder="Username" required class="border border-gray-300 dark:border-gray-600 p-2 rounded w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+          <input type="password" id="password" placeholder="Password" required class="border border-gray-300 dark:border-gray-600 p-2 rounded w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+          <input type="text" id="host" placeholder="Host (e.g. 127.0.0.1)" required class="border border-gray-300 dark:border-gray-600 p-2 rounded w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+          <input type="text" id="port" placeholder="Port (e.g. 3306)" required class="border border-gray-300 dark:border-gray-600 p-2 rounded w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+          <input type="text" id="database" placeholder="Database" required class="border border-gray-300 dark:border-gray-600 p-2 rounded w-full col-span-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+        </div>
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors duration-200">Login</button>
+      </form>
+      <div id="login-status" class="mt-4"></div>
+    </div>
+
+    <!-- Query Form -->
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-gray-200 dark:border-gray-700">
+      <h2 class="text-xl font-semibold mb-4">2. Run SQL Query</h2>
+      <form id="query-form" class="space-y-4">
+        <textarea id="query" rows="4" placeholder="Enter SQL query..." class="w-full border border-gray-300 dark:border-gray-600 p-2 rounded resize-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent"></textarea>
+        <button type="submit" class="bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 text-white px-4 py-2 rounded transition-colors duration-200">Execute Query</button>
+      </form>
+      <div id="results" class="mt-6"></div>
+    </div>
+  </div>
+
+  <script>
+    let savedCredentials = {};
+
+    // Theme toggle functionality
+    function toggleTheme() {
+      if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.theme = 'light';
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.theme = 'dark';
+      }
+    }
+
+    // Add event listener to theme toggle button
+    document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+
+    document.getElementById('login-form').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      savedCredentials = {
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value,
+        host: document.getElementById('host').value,
+        port: document.getElementById('port').value,
+        database: document.getElementById('database').value
+      };
+
+      const res = await fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(savedCredentials)
+      });
+
+      const data = await res.json();
+      const statusDiv = document.getElementById('login-status');
+      if (data.message) {
+        statusDiv.innerHTML = `<p class="text-green-600 dark:text-green-400 font-medium">${data.message}</p>`;
+      } else {
+        statusDiv.innerHTML = `<p class="text-red-600 dark:text-red-400 font-medium">${data.error}</p>`;
+      }
+    });
+
+    document.getElementById('query-form').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const queryText = document.getElementById('query').value;
+
+      const res = await fetch('/execute-query', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ credentials: savedCredentials, query: queryText })
+      });
+
+      const data = await res.json();
+      const resultsDiv = document.getElementById('results');
+
+      if (data.error) {
+        resultsDiv.innerHTML = `<p class="text-red-600 dark:text-red-400 font-medium">${data.error}</p>`;
+        return;
+      }
+
+      if (data.results.length === 0) {
+        resultsDiv.innerHTML = "<p class='text-gray-600 dark:text-gray-400'>No results.</p>";
+        return;
+      }
+
+      let table = `
+        <div class="overflow-auto">
+        <table class="table-auto w-full border border-gray-300 dark:border-gray-600 mt-4 bg-white dark:bg-gray-800">
+          <thead class="bg-gray-100 dark:bg-gray-700">
+            <tr>${Object.keys(data.results[0]).map(col => `<th class="border border-gray-300 dark:border-gray-600 p-2 text-left">${col}</th>`).join('')}</tr>
+          </thead>
+          <tbody>
+      `;
+
+      for (let row of data.results) {
+        table += `<tr class="hover:bg-gray-50 dark:hover:bg-gray-700">${Object.values(row).map(val => `<td class="border border-gray-300 dark:border-gray-600 p-2">${val !== null ? val : '<span class="text-gray-400 dark:text-gray-500">NULL</span>'}</td>`).join('')}</tr>`;
+      }
+
+      table += "</tbody></table></div>";
+      resultsDiv.innerHTML = table;
+    });
+  </script>
+
+</body>
+</html>
